@@ -17,12 +17,12 @@ td{
 h3{
     font-style: italic;
 }
-@media (min-width: 500px){
+@media (min-width: 800px){
     body{
         background-color: lightsteelblue;
     }
 }
-@media (max-width: 499px){
+@media (max-width: 799px){
     body{
         background-color: gold;
     }
