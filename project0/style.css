@@ -9,6 +9,7 @@ div ul {
 }
 
 div ol {
+  font-size: 18px;
   colour: red;
 }
 
@@ -19,6 +20,7 @@ div ol {
   border: 1px solid black;
   padding: 20px;
   margin: 20px;
+  border-radius: 4px;
 }
 
 .warning {

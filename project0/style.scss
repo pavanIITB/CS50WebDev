@@ -11,6 +11,7 @@ div{
         colour: $colour;
     }
     ol{
+        font-size: 18px;
         colour: $colour;
     }
 }
@@ -22,6 +23,7 @@ div{
     border: 1px solid black;
     padding: 20px;
     margin: 20px;
+    border-radius: 4px;
 }
 
 .warning{
