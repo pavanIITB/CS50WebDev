@@ -27,3 +27,17 @@ h3{
         background-color: gold;
     }
 }
+
+#top{
+    font-size: small;
+}
+#middle{
+    font-size: large;
+}
+#bottom{
+    font-size: xx-large;
+}
+.name{
+    color: mediumvioletred;
+    font-style: italic;
+}
