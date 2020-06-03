@@ -5,12 +5,12 @@ div p {
 
 div ul {
   font-size: 14px;
-  colour: red;
+  color: red;
 }
 
 div ol {
   font-size: 18px;
-  colour: red;
+  color: red;
 }
 
 .warning, .success, .error {
