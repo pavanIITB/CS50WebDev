@@ -1,12 +1,16 @@
 table{
     border: 2px solid black;
     border-collapse: collapse;
+    padding: 20px;
+    margin: 100px;
 }
 th{
     background-color: darkgray;
+    text-align: center;
 }
 td{
     background-color: lightgray;
+    text-align: center;
 }
 h3{
     font-style: italic;
