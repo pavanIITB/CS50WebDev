@@ -1,18 +1,20 @@
 
 $colour: red;
 
+
+ul{
+    font-size: 14px;
+    color: $colour;
+}
+ol{
+    font-size: 18px;
+    color: $colour;
+}
+
 div{
     p{
         font-style: italic;
         color: blue;
-    }
-    ul{
-        font-size: 14px;
-        color: $colour;
-    }
-    ol{
-        font-size: 18px;
-        color: $colour;
     }
 }
 

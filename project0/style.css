@@ -1,16 +1,16 @@
-div p {
-  font-style: italic;
-  color: blue;
-}
-
-div ul {
+ul {
   font-size: 14px;
   color: red;
 }
 
-div ol {
+ol {
   font-size: 18px;
   color: red;
+}
+
+div p {
+  font-style: italic;
+  color: blue;
 }
 
 .warning, .success, .error {
