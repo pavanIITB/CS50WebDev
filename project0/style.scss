@@ -1,0 +1,38 @@
+
+$colour: red;
+
+div{
+    p{
+        font-style: italic;
+        color: blue;
+    }
+    ul{
+        font-size: 14px;
+        colour: $colour;
+    }
+    ol{
+        colour: $colour;
+    }
+}
+
+%message{
+    font-family: sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    border: 1px solid black;
+    padding: 20px;
+    margin: 20px;
+}
+
+.warning{
+    @extend %message;
+    background-color: rgb(241, 243, 147);
+}
+.success{
+    @extend %message;
+    background-color: rgb(158, 238, 158);
+}
+.error{
+    @extend %message;
+    background-color: rgb(238, 158, 158);
+}

@@ -1,0 +1,35 @@
+div p {
+  font-style: italic;
+  color: blue;
+}
+
+div ul {
+  font-size: 14px;
+  colour: red;
+}
+
+div ol {
+  colour: red;
+}
+
+.warning, .success, .error {
+  font-family: sans-serif;
+  font-size: 18px;
+  font-weight: bold;
+  border: 1px solid black;
+  padding: 20px;
+  margin: 20px;
+}
+
+.warning {
+  background-color: #f1f393;
+}
+
+.success {
+  background-color: #9eee9e;
+}
+
+.error {
+  background-color: #ee9e9e;
+}
+/*# sourceMappingURL=style.css.map */
