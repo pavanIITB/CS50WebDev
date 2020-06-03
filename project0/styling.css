@@ -19,7 +19,7 @@ h3{
 }
 @media (min-width: 800px){
     body{
-        background-color: lightsteelblue;
+        background-color: rgb(252, 160, 224);
     }
 }
 @media (max-width: 799px){
