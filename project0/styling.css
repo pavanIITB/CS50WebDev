@@ -1,0 +1,13 @@
+table{
+    border: 2px;
+    border-collapse: collapse;
+}
+th{
+    background-color: darkgray;
+}
+td{
+    background-color: lightgray;
+}
+h3{
+    font-style: italic;
+}
