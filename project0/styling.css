@@ -2,7 +2,7 @@ table{
     border: 2px solid black;
     border-collapse: collapse;
     padding: 20px;
-    margin: 100px;
+    margin: 50px;
 }
 th{
     background-color: darkgray;
