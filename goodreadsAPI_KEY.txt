@@ -1,2 +1,22 @@
+API:
+
 key: CbrhM9CbXo0tgNEgjQtFAg
 secret: s9wQEMstleF1bEXSuCyTb4PRYeieoQ1n4BsNpaVRF8
+
+
+DATABASE:
+
+Host
+ec2-52-70-15-120.compute-1.amazonaws.com
+Database
+d4s329tvnvqifu
+User
+gpulwugmprscgh
+Port
+5432
+Password
+08b65ee4d46d8e91a7bf0abfd90d37ca3a04cce500075c84fb8d35dc7a5a34bd
+URI
+postgres://gpulwugmprscgh:08b65ee4d46d8e91a7bf0abfd90d37ca3a04cce500075c84fb8d35dc7a5a34bd@ec2-52-70-15-120.compute-1.amazonaws.com:5432/d4s329tvnvqifu
+Heroku CLI
+heroku pg:psql postgresql-triangular-51474 --app cs50book-review
