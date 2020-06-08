@@ -1,25 +1,29 @@
 {% extends "layouts.html" %}
 
 {% block title %}
-    Register
+    Register Here
 {% endblock %}
 
 {% block body %}
     <h1>Register here</h1>
 
-    <form action="{{ url_for('success') }}" method="get">
+    <form action="{{ url_for('register') }}" method="post">
 
         <div class="form-group">
-            <label for="exampleInputEmail1">Email address</label>
-            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+            <input class="form-control" name="input_username" placeholder="Username">
         </div>
+
         <div class="form-group">
-            <label for="exampleInputPassword1">Password</label>
-            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+            <input class="form-control" name="input_email" placeholder="Email">
         </div>
-        
-        <button type="submit" class="btn btn-primary">Submit</button>
+
+        <div class="form-group">
+            <input class="form-control" name="input_password" placeholder="Password">
+        </div>
+
+        <div class="form-group">
+            <button class="btn btn-primary">Register</button>
+        </div>
     
     </form>
 {% endblock %}
