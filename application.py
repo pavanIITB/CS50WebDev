@@ -23,7 +23,8 @@ db = scoped_session(sessionmaker(bind=engine))
 
 @app.route("/")
 def index():
-    return render_template("register.html")
+    #return render_template("register.html")
+    return render_template("sign_in.html")
     
 @app.route("/register", methods=["POST"])
 def register():
@@ -46,6 +47,17 @@ def register():
 @app.route("/success")
 def success():
     return "Registration Successful!!"
+
+@app.route("/sign_in",methods=["POST"])
+def sign_in():
+    username= request.form.get("input_username")
+    password= request.form.get("input_password")
+
+    if db.execute("SELECT * FROM users WHERE username = :username", {"username": username}).rowcount == 0:
+        return render_template("error.html", message="User not registered")
+    if db.execute("SELECT * FROM users WHERE username = :username AND password = :password", {"username": username, "password": password}).rowcount == 1:
+        return "You are logged in!"
+    else: return render_template("error.html", message="Invalid Password")
 
 if __name__ == '__main__':
     app.run(debug=True)
