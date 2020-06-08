@@ -25,6 +25,11 @@ db = scoped_session(sessionmaker(bind=engine))
 def index():
     #return render_template("register.html")
     return render_template("sign_in.html")
+
+@app.route("/reg")
+def reg():
+    return render_template("register.html")
+    #return render_template("sign_in.html")
     
 @app.route("/register", methods=["POST"])
 def register():
