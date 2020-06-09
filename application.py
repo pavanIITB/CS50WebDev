@@ -30,7 +30,12 @@ def index():
 def reg():
     return render_template("register.html")
     #return render_template("sign_in.html")
-    
+
+@app.route("/login")
+def login():
+    #return render_template("register.html")
+    return render_template("sign_in.html")
+
 @app.route("/register", methods=["POST"])
 def register():
     """RIGISTER HERE"""
@@ -68,8 +73,37 @@ def sign_in():
     if db.execute("SELECT * FROM users WHERE username = :username", {"username": username}).rowcount == 0:
         return render_template("error.html", message="User not registered")
     if db.execute("SELECT * FROM users WHERE username = :username AND password = :password", {"username": username, "password": password}).rowcount == 1:
-        return "You are logged in!"
+        return render_template("main.html")
     else: return render_template("error.html", message="Invalid Password")
+
+@app.route("/search",methods=["POST"])
+def search():
+    search_by = request.form.get("search_by")
+    search_input = request.form.get("search_input")
+
+    if search_by == 'select_isbn':
+        search_result = db.execute("SELECT * FROM books WHERE isbn = :isbn", {"isbn": search_input}).fetchall()
+        return render_template("search_result.html", search_result=search_result)
+
+    if search_by == 'select_title':
+        search_result = db.execute("SELECT * FROM books WHERE title = :title", {"title": search_input}).fetchall()
+        return render_template("search_result.html", search_result=search_result)
+    
+    if search_by == 'select_author':
+        search_result = db.execute("SELECT * FROM books WHERE author = :author", {"author": search_input}).fetchall()
+        return render_template("search_result.html", search_result=search_result)    
+    
+    #search_any Incomplete
+    if search_by == 'select_any':
+        search_result = db.execute("SELECT * FROM books WHERE isbn = :isbn", {"isbn": search_input}).fetchall()
+        return render_template("search_result.html", search_result=search_result)
+
+@app.route("/book/<int:book_id>")
+def book(book_id):
+    book = db.execute("SELECT * FROM books WHERE id = :id", {"id": book_id}).fetchone()
+    return render_template("book.html", book = book)
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)

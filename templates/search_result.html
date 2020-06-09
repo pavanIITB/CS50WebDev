@@ -1,0 +1,17 @@
+{% extends "layouts.html" %}
+
+{% block title %}
+    Search Result
+{% endblock %}
+
+{% block body %}
+    <h3>Search Result</h3>
+    <ol>
+        {% for result in search_result %}
+            <li><a href="{{ url_for('book', book_id=result.id) }}">
+                    <h5>{{ result.isbn }},{{ result.title }},{{ result.author }},{{ result.year }}</h5>
+                </a>
+            </li>
+        {% endfor %}
+    </ol>
+{% endblock %}

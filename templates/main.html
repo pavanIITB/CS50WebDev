@@ -1,0 +1,40 @@
+{% extends "layouts.html" %}
+
+{% block title %}
+    Main
+{% endblock %}
+
+{% block body %}
+    <h3>Login Successful!</h3>
+    <a class="btn btn-primary" href="login" role="button">Logout</a>
+    <hr>
+    <h2>Search</h2>
+
+    <form action="{{ url_for('search') }}" method="post">
+
+        <label for="search_by">Search by:</label>
+        <div class="form-row">
+
+            <div class="form-group col-md-3">
+                <select class="form-control" name="search_by">                
+                    <option value="select_isbn">ISBN Number</option>
+                    <option value="select_title">Title</option>
+                    <option value="select_author">Author</option>
+                    <option value="select_any">Any</option>
+                </select>
+            </div>
+
+            <div class="form-group col-md-3">
+                <input class="form-control" name="search_input" placeholder="Search">
+            </div>
+
+        </div>
+
+        <div class="form-row">        
+            <div class="form-group">
+                <button class="btn btn-primary">Search</button>
+            </div>
+        </div>
+
+    </form>
+{% endblock %}
