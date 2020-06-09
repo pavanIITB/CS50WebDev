@@ -6,6 +6,8 @@
 
 {% block body %}
     <h3>Search Result</h3>
+
+    <h4>{{ message }}</h4>
     <ol>
         {% for result in search_result %}
             <li><a href="{{ url_for('book', book_id=result.id) }}">

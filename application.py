@@ -52,9 +52,7 @@ def register():
         db.execute("INSERT INTO users (username, email, password) VALUES (:username, :email, :password)",
             {"username": username, "email": email,"password": password})
     else:
-        return render_template("error.html", message="Username Already Exists")
-    
-        
+        return render_template("error.html", message="Username Already Exists")    
     db.commit()
 
     return "Registration Successful!!"
@@ -83,20 +81,32 @@ def search():
 
     if search_by == 'select_isbn':
         search_result = db.execute("SELECT * FROM books WHERE isbn = :isbn", {"isbn": search_input}).fetchall()
-        return render_template("search_result.html", search_result=search_result)
+        if search_result == None:
+            message = "No books found"
+        else: message = f"Found {len(search_result)} books"
+        return render_template("search_result.html", search_result=search_result,message=message)
 
     if search_by == 'select_title':
         search_result = db.execute("SELECT * FROM books WHERE title = :title", {"title": search_input}).fetchall()
-        return render_template("search_result.html", search_result=search_result)
+        if search_result == None:
+            message = "No books found"
+        else: message = f"Found {len(search_result)} books"
+        return render_template("search_result.html", search_result=search_result,message=message)
     
     if search_by == 'select_author':
         search_result = db.execute("SELECT * FROM books WHERE author = :author", {"author": search_input}).fetchall()
-        return render_template("search_result.html", search_result=search_result)    
+        if search_result == None:
+            message = "No books found"
+        else: message = f"Found {len(search_result)} books"
+        return render_template("search_result.html", search_result=search_result,message=message)    
     
     #search_any Incomplete
     if search_by == 'select_any':
         search_result = db.execute("SELECT * FROM books WHERE isbn = :isbn", {"isbn": search_input}).fetchall()
-        return render_template("search_result.html", search_result=search_result)
+        if search_result == None:
+            message = "No books found"
+        else: message = f"Found {len(search_result)} books"
+        return render_template("search_result.html", search_result=search_result,message=message)
 
 @app.route("/book/<int:book_id>")
 def book(book_id):
