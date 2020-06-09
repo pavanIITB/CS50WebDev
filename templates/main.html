@@ -16,11 +16,11 @@
         <div class="form-row">
 
             <div class="form-group col-md-3">
-                <select class="form-control" name="search_by">                
+                <select class="form-control" name="search_by">   
+                    <option value="select_any">Any</option>             
                     <option value="select_isbn">ISBN Number</option>
                     <option value="select_title">Title</option>
                     <option value="select_author">Author</option>
-                    <option value="select_any">Any</option>
                 </select>
             </div>
 
@@ -33,6 +33,7 @@
         <div class="form-row">        
             <div class="form-group">
                 <button class="btn btn-primary">Search</button>
+                <input class="btn btn-primary" type="reset" value="Reset">
             </div>
         </div>
 

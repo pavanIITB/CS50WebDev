@@ -103,7 +103,6 @@ def search():
         else: message = f"Found {len(search_result)} books"
         return render_template("search_result.html", search_result=search_result,message=message)    
     
-    #search_any Incomplete
     if search_by == 'select_any':
         search_result = []
         isbn_result = db.execute(f"SELECT * FROM books WHERE isbn LIKE '%{search_input}%' OR isbn LIKE '%{search_input_capital}%' OR isbn LIKE '%{search_input_lower}%' ").fetchall()
