@@ -4,6 +4,7 @@ from flask import Flask, session, render_template, request
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
+import string
 
 app = Flask(__name__)
 
@@ -78,23 +79,25 @@ def sign_in():
 def search():
     search_by = request.form.get("search_by")
     search_input = request.form.get("search_input")
+    search_input_capital = search_input.capitalize()
+    search_input_lower = search_input.lower()
 
     if search_by == 'select_isbn':
-        search_result = db.execute("SELECT * FROM books WHERE isbn = :isbn", {"isbn": search_input}).fetchall()
+        search_result = db.execute(f"SELECT * FROM books WHERE isbn LIKE '%{search_input}%' OR isbn LIKE '%{search_input_capital}%' OR isbn LIKE '%{search_input_lower}%' ").fetchall()
         if search_result == None:
             message = "No books found"
         else: message = f"Found {len(search_result)} books"
         return render_template("search_result.html", search_result=search_result,message=message)
 
     if search_by == 'select_title':
-        search_result = db.execute("SELECT * FROM books WHERE title = :title", {"title": search_input}).fetchall()
+        search_result = db.execute(f"SELECT * FROM books WHERE title LIKE '%{search_input}%' OR title LIKE '%{search_input_capital}%' OR title LIKE '%{search_input_lower}%' ").fetchall()
         if search_result == None:
             message = "No books found"
         else: message = f"Found {len(search_result)} books"
         return render_template("search_result.html", search_result=search_result,message=message)
     
     if search_by == 'select_author':
-        search_result = db.execute("SELECT * FROM books WHERE author = :author", {"author": search_input}).fetchall()
+        search_result = db.execute(f"SELECT * FROM books WHERE author LIKE '%{search_input}%' OR author LIKE '%{search_input_capital}%' OR author LIKE '%{search_input_lower}%' ").fetchall()
         if search_result == None:
             message = "No books found"
         else: message = f"Found {len(search_result)} books"
@@ -102,7 +105,17 @@ def search():
     
     #search_any Incomplete
     if search_by == 'select_any':
-        search_result = db.execute("SELECT * FROM books WHERE isbn = :isbn", {"isbn": search_input}).fetchall()
+        search_result = []
+        isbn_result = db.execute(f"SELECT * FROM books WHERE isbn LIKE '%{search_input}%' OR isbn LIKE '%{search_input_capital}%' OR isbn LIKE '%{search_input_lower}%' ").fetchall()
+        for result in isbn_result:
+            search_result.append(result)
+        title_result = db.execute(f"SELECT * FROM books WHERE title LIKE '%{search_input}%' OR title LIKE '%{search_input_capital}%' OR title LIKE '%{search_input_lower}%' ").fetchall()       
+        for result in title_result:
+            search_result.append(result)
+        author_result = db.execute(f"SELECT * FROM books WHERE author LIKE '%{search_input}%' OR author LIKE '%{search_input_capital}%' OR author LIKE '%{search_input_lower}%' ").fetchall()        
+        for result in author_result:
+            search_result.append(result)
+        
         if search_result == None:
             message = "No books found"
         else: message = f"Found {len(search_result)} books"
