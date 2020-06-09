@@ -37,13 +37,17 @@ def register():
     username= request.form.get("input_username")
     email= request.form.get("input_email")
     password= request.form.get("input_password")
-    
+    confirm_password= request.form.get("confirm_input_password")
+
     #Make sure the user is not already registered:
+    if password != confirm_password : return render_template("error.html", message="Passwords dont match!")
+    
     if db.execute("SELECT * FROM users WHERE username = :username", {"username": username}).rowcount == 0:
         db.execute("INSERT INTO users (username, email, password) VALUES (:username, :email, :password)",
             {"username": username, "email": email,"password": password})
     else:
         return render_template("error.html", message="Username Already Exists")
+    
         
     db.commit()
 
