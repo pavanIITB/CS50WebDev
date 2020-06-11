@@ -156,5 +156,13 @@ def flight_api(isbn):
         return jsonify({"error": "Invalid ISBN"}), 404
 
 
+@app.route("/review", methods=["POST"])
+def review():
+    review = request.form.get("input_review")
+    rating = request.form.get("rating")
+
+    return render_template("test.html", review = review, rating = rating)
+
+
 if __name__ == '__main__':
     app.run(debug=True)
