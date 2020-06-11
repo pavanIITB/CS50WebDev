@@ -125,19 +125,29 @@ def search():
 def book(book_id):
     try:
         book = db.execute("SELECT * FROM books WHERE id = :id", {"id": book_id}).fetchone()
+        #print("All good until here")
         isbn = book.isbn
         try:
             reviews = db.execute("SELECT * FROM reviews WHERE isbn = :isbn", {"isbn": isbn}).fetchall()
+            #print("All good until here")
+
         except: 
             reviews = "No reviews yet"
         try:
             res = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "CbrhM9CbXo0tgNEgjQtFAg", "isbns": isbn})
             info = res.json()
+            #print("All good until here")
+
         except:
             info['books'][0]['average_rating'] = "Data Not available!"
             info['books'][0]['work_ratings_count'] = "Data Not available!"
+        
+        #print("All good until here")
+
         return render_template("book.html", book = book, info = info, reviews = reviews)
-    except: return render_template("error.html", message="Book not in our records!")
+
+    except: 
+        return render_template("error.html", message="Book not in our records!")
 
 
 #Our own API:
