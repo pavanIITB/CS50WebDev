@@ -5,6 +5,7 @@ from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 import string
+import requests
 
 app = Flask(__name__)
 
@@ -122,8 +123,17 @@ def search():
 
 @app.route("/book/<int:book_id>")
 def book(book_id):
-    book = db.execute("SELECT * FROM books WHERE id = :id", {"id": book_id}).fetchone()
-    return render_template("book.html", book = book)
+    try:
+        book = db.execute("SELECT * FROM books WHERE id = :id", {"id": book_id}).fetchone()
+        isbn = book.isbn
+        try:
+            res = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "CbrhM9CbXo0tgNEgjQtFAg", "isbns": isbn})
+            info = res.json()
+        except:
+            info['books'][0]['average_rating'] = "Data Not available!"
+            info['books'][0]['work_ratings_count'] = "Data Not available!"
+        return render_template("book.html", book = book, info = info)
+    except: return render_template("error.html", message="Book not in our records!")
 
 
 if __name__ == '__main__':
