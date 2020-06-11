@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, session, render_template, request
+from flask import Flask, session, render_template, request, jsonify
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -134,6 +134,26 @@ def book(book_id):
             info['books'][0]['work_ratings_count'] = "Data Not available!"
         return render_template("book.html", book = book, info = info)
     except: return render_template("error.html", message="Book not in our records!")
+
+
+#Our own API:
+@app.route("/api/<string:isbn>")
+def flight_api(isbn):
+    """Return details about a single book."""
+    try:
+        book = db.execute("SELECT * FROM books WHERE isbn = :isbn", {"isbn": isbn}).fetchone()
+        res = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "CbrhM9CbXo0tgNEgjQtFAg", "isbns": isbn})
+        info = res.json()
+        return jsonify({
+            "title": book.title,
+            "author": book.author,
+            "year": book.year,
+            "isbn": book.isbn,
+            "review_count": info['books'][0]['work_ratings_count'],
+            "average_score": info['books'][0]['average_rating']
+        })
+    except:
+        return jsonify({"error": "Invalid ISBN"}), 404
 
 
 if __name__ == '__main__':
