@@ -127,12 +127,16 @@ def book(book_id):
         book = db.execute("SELECT * FROM books WHERE id = :id", {"id": book_id}).fetchone()
         isbn = book.isbn
         try:
+            reviews = db.execute("SELECT * FROM reviews WHERE isbn = :isbn", {"isbn": isbn}).fetchall()
+        except: 
+            reviews = "No reviews yet"
+        try:
             res = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "CbrhM9CbXo0tgNEgjQtFAg", "isbns": isbn})
             info = res.json()
         except:
             info['books'][0]['average_rating'] = "Data Not available!"
             info['books'][0]['work_ratings_count'] = "Data Not available!"
-        return render_template("book.html", book = book, info = info)
+        return render_template("book.html", book = book, info = info, reviews = reviews)
     except: return render_template("error.html", message="Book not in our records!")
 
 
@@ -160,8 +164,18 @@ def flight_api(isbn):
 def review():
     review = request.form.get("input_review")
     rating = request.form.get("rating")
+    username = request.form.get("input_username")
+    isbn = request.form.get("input_isbn")         
 
-    return render_template("test.html", review = review, rating = rating)
+    if db.execute("SELECT * FROM reviews WHERE username = :username AND isbn = :isbn", {"username": username, "isbn": isbn}).rowcount == 0:
+        db.execute("INSERT INTO reviews (isbn, username, review, rating) VALUES (:isbn, :username, :review, :rating)",
+            {"isbn": isbn, "username": username, "review": review,"rating": rating})
+    else:
+        return render_template("error.html", message="You have already reviewed the book")    
+    db.commit()
+
+
+    return render_template("test.html", review = review, rating = rating, username = username, isbn = isbn)
 
 
 if __name__ == '__main__':
