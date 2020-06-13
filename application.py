@@ -47,8 +47,8 @@ user = User(id,'username','password')
 #@login_required
 def index():
     #return render_template("register.html")
-    return render_template("main.html")
-    #return render_template("sign_in.html")
+    #return render_template("main.html")
+    return render_template("sign_in.html")
 
 @app.route("/reg")
 def reg():
@@ -101,8 +101,8 @@ def sign_in():
         userid = user.id
         user = User(userid,username,password)
         login_user(user)
-        return redirect(url_for('index'))
-        #return render_template("main.html")
+        #return redirect(url_for('index'))
+        return render_template("main.html")
     else: return render_template("error.html", message="Invalid Password")
 
 @app.route("/search",methods=["POST"])
