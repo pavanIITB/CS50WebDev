@@ -227,7 +227,7 @@ def prelogout():
 @app.route("/logout")
 #@login_required
 def logout():
-    return user.username
+    #return user.username
     logout_user()
     return Response('<p>Logged out</p>')
 
