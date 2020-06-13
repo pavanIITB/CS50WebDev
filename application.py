@@ -1,11 +1,13 @@
 import os
 
-from flask import Flask, session, render_template, request, jsonify
+from flask import Flask, session, render_template, request, jsonify, redirect, url_for, Response, abort
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 import string
 import requests
+from flask_login import LoginManager, UserMixin, login_required, login_user, logout_user
+
 
 app = Flask(__name__)
 
@@ -23,10 +25,28 @@ engine = create_engine(os.getenv("DATABASE_URL"))
 db = scoped_session(sessionmaker(bind=engine))
 
 
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = "login"
+
+class User(UserMixin):
+
+    def __init__(self,id):
+        self.id = id
+        self.username = 'username'
+        self.password = 'password'
+        
+    def __repr__(self):
+        return "%d/%s/%s" % (self.id, self.username, self.password)
+
+
+
 @app.route("/")
+#@login_required
 def index():
     #return render_template("register.html")
-    return render_template("sign_in.html")
+    return render_template("main.html")
+    #return render_template("sign_in.html")
 
 @app.route("/reg")
 def reg():
@@ -57,9 +77,10 @@ def register():
         return render_template("error.html", message="Username Already Exists")    
     db.commit()
 
-    return "Registration Successful!!"
+    return redirect(url_for('login'))
 
 @app.route("/success")
+#@login_required
 def success():
     return "Registration Successful!!"
 
@@ -73,10 +94,16 @@ def sign_in():
     if db.execute("SELECT * FROM users WHERE username = :username", {"username": username}).rowcount == 0:
         return render_template("error.html", message="User not registered")
     if db.execute("SELECT * FROM users WHERE username = :username AND password = :password", {"username": username, "password": password}).rowcount == 1:
-        return render_template("main.html")
+        user = db.execute("SELECT * FROM users WHERE username = :username", {"username": username}).fetchone()
+        userid = user.id
+        user = User(userid)
+        login_user(user)
+        return redirect(url_for('index'))
+        #return render_template("main.html")
     else: return render_template("error.html", message="Invalid Password")
 
 @app.route("/search",methods=["POST"])
+#@login_required
 def search():
     search_by = request.form.get("search_by")
     search_input = request.form.get("search_input")
@@ -122,6 +149,7 @@ def search():
         return render_template("search_result.html", search_result=search_result,message=message)
 
 @app.route("/book/<int:book_id>")
+#@login_required
 def book(book_id):
     try:
         book = db.execute("SELECT * FROM books WHERE id = :id", {"id": book_id}).fetchone()
@@ -171,6 +199,7 @@ def flight_api(isbn):
 
 
 @app.route("/review", methods=["POST"])
+#@login_required
 def review():
     review = request.form.get("input_review")
     rating = request.form.get("rating")
@@ -186,6 +215,21 @@ def review():
 
 
     return render_template("test.html", review = review, rating = rating, username = username, isbn = isbn)
+
+@app.route("/prelogout")
+def prelogout():
+    return redirect(url_for('logout'))
+
+@app.route("/logout")
+#@login_required
+def logout():
+    logout_user()
+    return Response('<p>Logged out</p>')
+
+# callback to reload the user object        
+@login_manager.user_loader
+def load_user(id):
+    return User(id)
 
 
 if __name__ == '__main__':
