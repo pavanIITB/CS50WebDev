@@ -1,6 +1,7 @@
 import os
 
 from flask import Flask, session, render_template, request, jsonify, redirect, url_for, Response, abort
+from flask_login import LoginManager, UserMixin, login_required, login_user, logout_user
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -31,15 +32,16 @@ login_manager.login_view = "login"
 
 class User(UserMixin):
 
-    def __init__(self,id):
+    def __init__(self,id,username,password):
         self.id = id
-        self.username = 'username'
-        self.password = 'password'
+        self.username = username
+        self.password = password
         
     def __repr__(self):
         return "%d/%s/%s" % (self.id, self.username, self.password)
 
 
+user = User(id,'username','password')
 
 @app.route("/")
 #@login_required
@@ -86,6 +88,7 @@ def success():
 
 @app.route("/sign_in",methods=["POST"])
 def sign_in():
+    global user
     username= request.form.get("input_username")
     password= request.form.get("input_password")
 
@@ -96,7 +99,7 @@ def sign_in():
     if db.execute("SELECT * FROM users WHERE username = :username AND password = :password", {"username": username, "password": password}).rowcount == 1:
         user = db.execute("SELECT * FROM users WHERE username = :username", {"username": username}).fetchone()
         userid = user.id
-        user = User(userid)
+        user = User(userid,username,password)
         login_user(user)
         return redirect(url_for('index'))
         #return render_template("main.html")
@@ -151,6 +154,7 @@ def search():
 @app.route("/book/<int:book_id>")
 #@login_required
 def book(book_id):
+    global user
     try:
         book = db.execute("SELECT * FROM books WHERE id = :id", {"id": book_id}).fetchone()
         #print("All good until here")
@@ -172,7 +176,7 @@ def book(book_id):
         
         #print("All good until here")
 
-        return render_template("book.html", book = book, info = info, reviews = reviews)
+        return render_template("book.html", book = book, info = info, reviews = reviews, username = user.username)
 
     except: 
         return render_template("error.html", message="Book not in our records!")
@@ -214,7 +218,7 @@ def review():
     db.commit()
 
 
-    return render_template("test.html", review = review, rating = rating, username = username, isbn = isbn)
+    return "Response recorded successfully!"
 
 @app.route("/prelogout")
 def prelogout():
@@ -223,14 +227,16 @@ def prelogout():
 @app.route("/logout")
 #@login_required
 def logout():
+    return user.username
     logout_user()
     return Response('<p>Logged out</p>')
 
 # callback to reload the user object        
 @login_manager.user_loader
 def load_user(id):
-    return User(id)
-
+    global user
+    #return User(id,'username','password')
+    return user
 
 if __name__ == '__main__':
     app.run(debug=True)
