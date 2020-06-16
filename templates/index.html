@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script>
+
+            // Set starting value of username to 0
+            if (!localStorage.getItem('username'))
+                localStorage.setItem('username', "UnknownUser");
+
+            // Load current value of  username
+            document.addEventListener('DOMContentLoaded', () => {
+                document.querySelector('#username').innerHTML = localStorage.getItem('username');
+
+                document.querySelector('#form').onsubmit = function() {
+                    const username = document.querySelector('#username_input').value;
+                    localStorage.setItem('username', username);
+                };
+            });
+
+        </script>
+        <title>Flack</title>
+    </head>
+    <body>
+        <h1>Welcome <span id="username"></span>!</h1>
+        <form id="form">
+            <input id="username_input" autocomplete="off" autofocus placeholder="Username" type="text">
+            <input type="submit">
+        </form>
+    </body>
+</html>
