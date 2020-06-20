@@ -153,7 +153,6 @@ document.addEventListener("DOMContentLoaded", () => {
       let li = document.createElement("li");
   
       li.classList.add("list-group-item");
-  
       li.innerHTML = `<strong>${data.username}</strong>: ${
         data.msg
       } <small class="text-muted d-flex justify-content-end">${get_date_string(
