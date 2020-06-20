@@ -26,7 +26,6 @@ document.addEventListener("DOMContentLoaded", () => {
         for (let c of data) {
           show_channel(c, socket);
         }
-        document.querySelector('h2').innerHTML = "Pavan";
         // initial active channel
         show_active_channel(localStorage.getItem("channel"));
         change_msg_title(localStorage.getItem("channel"));
@@ -46,6 +45,8 @@ document.addEventListener("DOMContentLoaded", () => {
     let channel_name_inp = document.querySelector("#channel-name");
     let msg_inp = document.querySelector("#msg-text");
     let msg_form = document.querySelector("#msg-form");
+    let attachment = document.querySelector("#attachment");
+    
   
     channel_form.addEventListener("submit", e => {
       // no reload
@@ -68,6 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
       e.preventDefault();
   
       let msg = msg_inp.value;
+      let file = attachment.value;
       let channel = localStorage.getItem("channel");
   
       if (!msg) {
@@ -82,6 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
   
       socket.emit("new msg", {
         msg,
+        file,
         channel,
         username: localStorage.getItem("username")
       });
@@ -151,12 +154,13 @@ document.addEventListener("DOMContentLoaded", () => {
     if (localStorage.getItem("channel") == data.channel) {
       let ul = document.querySelector("#msg-list");
       let li = document.createElement("li");
+  
       li.classList.add("list-group-item");
       li.innerHTML = `<strong>${data.username}</strong>: ${
         data.msg
-      } <small style="color: red;" class="text-muted d-flex justify-content-end">${get_date_string(
+      } <small class="text-muted d-flex justify-content-end">${get_date_string(
         data.created_at
-      )}</small>`;
+      )}</small><strong>${data.file}</strong>:`;
       ul.appendChild(li);
   
       // scroll msg-list
