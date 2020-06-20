@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
         for (let c of data) {
           show_channel(c, socket);
         }
-  
+        document.querySelector('h2').innerHTML = "Pavan";
         // initial active channel
         show_active_channel(localStorage.getItem("channel"));
         change_msg_title(localStorage.getItem("channel"));
@@ -151,11 +151,10 @@ document.addEventListener("DOMContentLoaded", () => {
     if (localStorage.getItem("channel") == data.channel) {
       let ul = document.querySelector("#msg-list");
       let li = document.createElement("li");
-  
       li.classList.add("list-group-item");
       li.innerHTML = `<strong>${data.username}</strong>: ${
         data.msg
-      } <small class="text-muted d-flex justify-content-end">${get_date_string(
+      } <small style="color: red;" class="text-muted d-flex justify-content-end">${get_date_string(
         data.created_at
       )}</small>`;
       ul.appendChild(li);
